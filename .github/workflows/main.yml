@@ -1,0 +1,63 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  lint:
+    name: Code standards
+    runs-on: ubuntu-latest
+    steps:
+      - name: "☁️ Checkout repository"
+        uses: actions/checkout@v2
+
+      - name: "🔧 Setup node"
+        uses: actions/setup-node@v2.1.5
+        with:
+          node-version: 16
+
+      - name: "🔧 Install npm@latest"
+        run: npm i -g npm@latest
+
+      - name: "📦 Install dependencies"
+        uses: bahmutov/npm-install@v1
+
+      - name: "🔍 Lint code"
+        run: npm run lint
+
+  test:
+    name: Test application
+    runs-on: ubuntu-latest
+    steps:
+      - name: "☁️ Checkout repository"
+        uses: actions/checkout@v2
+
+      - name: "🔧 Setup node"
+        uses: actions/setup-node@v2.1.5
+        with:
+          node-version: 16
+
+      - name: "🔧 Install npm@latest"
+        run: npm i -g npm@latest
+
+      - name: "📦 Install dependencies"
+        uses: bahmutov/npm-install@v1
+
+      - name: "🔍 Run tests"
+        run: npm run test
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "☁️ Checkout repository"
+        uses: actions/checkout@v2
+
+      - name: "📦 Deploy to Heroku"
+        uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: "configurable-sheet-ui-prod" #Must be unique in Heroku
+          heroku_email: "angela.liuwilkin@gmail.com"
+          buildpack: "https://github.com/heroku/heroku-buildpack-nodejs.git"
