@@ -46,9 +46,10 @@ jobs:
         uses: bahmutov/npm-install@v1
 
       - name: "🔍 Run tests"
-        run: npm run test
+        run: npm run ci:test
 
   build:
+    name: Deploy to Heroku
     runs-on: ubuntu-latest
     steps:
       - name: "☁️ Checkout repository"
