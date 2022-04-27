@@ -1,4 +1,7 @@
-# ConfigurableCharacterSheetUi
+# Configurable Character Sheet Ui
+Live address: https://configurable-sheet-ui-prod.herokuapp.com/
+
+Product backlog: https://trello.com/b/lTui0xDF/final-project-kanban
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.3.3.
 
