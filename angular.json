@@ -109,8 +109,9 @@
       }
     }
   },
-  "defaultProject": "configurable-character-sheet-ui",
   "cli": {
-    "defaultCollection": "@angular-eslint/schematics"
+    "schematicCollections": [
+      "@angular-eslint/schematics"
+    ]
   }
 }
