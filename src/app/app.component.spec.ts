@@ -19,7 +19,7 @@ describe('AppComponent', () => {
   it(`should have as title 'configurable-character-sheet-ui'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('configurable-character-sheet-ui');
+    expect(app.title).toEqual('Configurable Character Sheet');
   });
 
   it('should render title', () => {
@@ -27,7 +27,7 @@ describe('AppComponent', () => {
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.querySelector('.content span')?.textContent).toContain(
-      'configurable-character-sheet-ui app is running!'
+      'Configurable Character Sheet'
     );
   });
 });
