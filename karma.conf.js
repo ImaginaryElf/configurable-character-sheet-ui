@@ -42,9 +42,9 @@ module.exports = function (config) {
     restartOnFileChange: true,
     customLaunchers: {
       ChromeHeadlessCustom: {
-        base: 'ChromeHeadless',
-        flags: ['--no-sandbox', '--disable-gpu']
-      }
-    }
+        base: "ChromeHeadless",
+        flags: ["--no-sandbox", "--disable-gpu"],
+      },
+    },
   });
 };
