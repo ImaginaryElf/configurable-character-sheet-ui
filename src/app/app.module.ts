@@ -5,8 +5,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HomeComponent } from './home/home.component';
-import { HttpClientModule } from '@angular/common/http';
-import { AuthModule } from '@auth0/auth0-angular';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { AuthHttpInterceptor, AuthModule } from '@auth0/auth0-angular';
 import { UserInfoComponent } from './components/user-info/user-info.component';
 import { AuthButtonComponent } from './components/auth-button/auth-button.component';
 import { UserComponent } from './user/user.component';
@@ -34,6 +34,15 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     AuthModule.forRoot({
       domain: 'dev-ukt61qwl.eu.auth0.com',
       clientId: 'm3LcxZElHmTPKy8zSGn0K8cRlV28XcZk',
+      redirectUri: window.location.origin,
+      audience: 'https://configurable-sheet-api-prod.herokuapp.com/',
+      httpInterceptor: {
+        allowedList: [
+          'https://configurable-sheet-api-prod.herokuapp.com/game',
+          'https://configurable-sheet-api-prod.herokuapp.com/player',
+          'https://configurable-sheet-api-prod.herokuapp.com/character',
+        ],
+      },
     }),
     LayoutModule,
     MatToolbarModule,
@@ -43,7 +52,13 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatListModule,
     MatProgressSpinnerModule,
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthHttpInterceptor,
+      multi: true,
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

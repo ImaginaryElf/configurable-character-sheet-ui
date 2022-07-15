@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthService } from '@auth0/auth0-angular';
 
 @Component({
@@ -6,6 +6,14 @@ import { AuthService } from '@auth0/auth0-angular';
   templateUrl: './user-info.component.html',
   styleUrls: ['./user-info.component.scss'],
 })
-export class UserInfoComponent {
+export class UserInfoComponent implements OnInit {
+  profileJson: string | undefined;
+
   constructor(public auth: AuthService) {}
+
+  ngOnInit(): void {
+    this.auth.user$.subscribe(
+      (profile) => (this.profileJson = JSON.stringify(profile, null, 2))
+    );
+  }
 }
