@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { tap } from 'rxjs';
 import { GameRepository } from '../repositories/game.repository';
 
@@ -21,25 +21,25 @@ export class ApiClientService {
     gameId: string,
     characterId: string
   ) {
-    const params = new HttpParams();
+    const params = [];
     if (gmId) {
       console.log(gmId);
-      params.set('gm_id', gmId);
+      params.push(`gm_id=${gmId}`);
     }
     if (playerId) {
       console.log(playerId);
-      params.set('player_id', playerId);
+      params.push(`player_id=${playerId}`);
     }
     if (gameId) {
       console.log(gameId);
-      params.set('game_id', gameId);
+      params.push(`game_id=${gameId}`);
     }
     if (characterId) {
       console.log(characterId);
-      params.set('character_id', characterId);
+      params.push(`character_id=${characterId}`);
     }
-    console.log(`${this.apiBaseUrl}/game?${params.toString()}`);
-    return this.http.get(`${this.apiBaseUrl}/game?${params.toString()}`).pipe(
+    console.log(`${this.apiBaseUrl}/game?${params.join('&')}`);
+    return this.http.get(`${this.apiBaseUrl}/game?${params.join('&')}`).pipe(
       tap((result) => {
         console.log(result);
         const response = result as ApiResponse;
