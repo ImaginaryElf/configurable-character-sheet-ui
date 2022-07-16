@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { tap } from 'rxjs';
 import { GameRepository } from '../repositories/game.repository';
+import {Game} from "../models/game";
 
 export interface ApiResponse {
   status: boolean;
@@ -38,23 +39,13 @@ export class ApiClientService {
       console.log(characterId);
       params.push(`character_id=${characterId}`);
     }
-    console.log(`${this.apiBaseUrl}/game?${params.join('&')}`);
+
     return this.http.get(`${this.apiBaseUrl}/game?${params.join('&')}`).pipe(
       tap((result) => {
         const response = result as ApiResponse;
         if (response && response.status) {
           this.gameRepo.updateGames(
-            response.data.map((g: any) => (g.id = g['_id']['$oid']))
-          );
-
-          this.gameRepo.updateCharacters(
-            response.data.flatMap((g: any) =>
-              g.players
-                .filter(
-                  (p: any) => p.player_id == playerId && p.characters.length > 1
-                )
-                .flatMap((c: any) => c.characters)
-            )
+            response.data.map((g: any) => new Game(g['_id']['$oid'], g['gm_id'], g['name'], g['schema'], g['layout'], g['players']))
           );
         }
       })

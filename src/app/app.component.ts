@@ -6,7 +6,6 @@ import { AuthService } from '@auth0/auth0-angular';
 import { GameRepository } from '../repositories/game.repository';
 import { ApiClientService } from '../services/api-client.service';
 import { Game } from '../models/game';
-import { Player } from '../models/player';
 
 @Component({
   selector: 'app-root',
@@ -16,7 +15,6 @@ import { Player } from '../models/player';
 export class AppComponent implements OnInit, OnDestroy {
   title = 'Configurable Character Sheet';
   games: Game[] | undefined;
-  characters: Player[] | undefined;
   isHandset$: Observable<boolean> = this.breakpointObserver
     .observe(Breakpoints.Handset)
     .pipe(
@@ -36,11 +34,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.subscriptions.add(
       this.auth.user$.subscribe((u) => {
         if (u && u.email) {
-          this.subscriptions.add(
-            this.apiClient.getGames(u.email, u.email, '', '').subscribe((r) => {
-              console.log("api response:" + JSON.stringify(r));
-            })
-          );
+          this.apiClient.getGames(u.email, u.email, '', '');
         }
       })
     );
@@ -48,12 +42,6 @@ export class AppComponent implements OnInit, OnDestroy {
       this.gameRepo.games$.subscribe((g) => {
         this.games = g;
         console.log("games store:" + JSON.stringify(this.games));
-      })
-    );
-    this.subscriptions.add(
-      this.gameRepo.characters$.subscribe((c) => {
-        this.characters = c;
-        console.log("characters store:" + JSON.stringify(this.characters));
       })
     );
   }
