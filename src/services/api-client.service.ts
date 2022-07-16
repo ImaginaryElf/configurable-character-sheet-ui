@@ -12,7 +12,7 @@ export interface ApiResponse {
   providedIn: 'root',
 })
 export class ApiClientService {
-  apiBaseUrl = 'https://configurable-sheet-api-prod.herokuapp.com/';
+  apiBaseUrl = 'https://configurable-sheet-api-prod.herokuapp.com';
   constructor(private http: HttpClient, private gameRepo: GameRepository) {}
 
   getGames(
