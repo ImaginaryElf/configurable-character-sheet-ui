@@ -50,7 +50,11 @@ export class ApiClientService {
 
           this.gameRepo.updateCharacters(
             response.data.flatMap((g: any) =>
-              g.players.filter((p: any) => p.id == playerId)
+              g.players
+                .filter(
+                  (p: any) => p.player_id == playerId && p.characters.length > 1
+                )
+                .flatMap((c: any) => c.characters)
             )
           );
         }
