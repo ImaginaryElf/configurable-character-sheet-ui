@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { tap } from 'rxjs';
 import { GameRepository } from '../repositories/game.repository';
-import {Game} from "../models/game";
+import { Game } from '../models/game';
 
 export interface ApiResponse {
   status: boolean;
@@ -45,7 +45,17 @@ export class ApiClientService {
         const response = result as ApiResponse;
         if (response && response.status) {
           this.gameRepo.updateGames(
-            response.data.map((g: any) => new Game(g['_id']['$oid'], g['gm_id'], g['name'], g['schema'], g['layout'], g['players']))
+            response.data.map(
+              (g: any) =>
+                new Game(
+                  g['_id']['$oid'],
+                  g['gm_id'],
+                  g['name'],
+                  g['schema'],
+                  g['layout'],
+                  g['players']
+                )
+            )
           );
         }
       })
