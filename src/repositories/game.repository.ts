@@ -6,15 +6,22 @@ import {
 } from '@ngneat/elf-entities';
 import { Game } from '../models/game';
 import { Injectable } from '@angular/core';
+import { Player } from '../models/player';
 
-const store = createStore({ name: 'games' }, withEntities<Game>());
+const gameStore = createStore({ name: 'games' }, withEntities<Game>());
+const charStore = createStore({ name: 'characters' }, withEntities<Player>());
 
 @Injectable({ providedIn: 'root' })
 export class GameRepository {
   constructor() {}
-  games$ = store.pipe(selectAllEntities());
+  games$ = gameStore.pipe(selectAllEntities());
+  characters$ = charStore.pipe(selectAllEntities());
 
   updateGames(games: Game[]) {
-    store.update(setEntities(games));
+    gameStore.update(setEntities(games));
+  }
+
+  updateCharacters(characters: Player[]) {
+    charStore.update(setEntities(characters));
   }
 }

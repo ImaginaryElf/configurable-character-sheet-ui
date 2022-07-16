@@ -39,9 +39,13 @@ export class ApiClientService {
         const response = result as ApiResponse;
         if (response && response.status) {
           this.gameRepo.updateGames(
-            response.data.map((g: any) => {
-              g.id = g['_id']['$oid'];
-            })
+            response.data.map((g: any) => (g.id = g['_id']['$oid']))
+          );
+
+          this.gameRepo.updateCharacters(
+            response.data.flatMap((g: any) =>
+              g.players.filter((p: any) => p.id == playerId)
+            )
           );
         }
       })

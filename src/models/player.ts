@@ -1,8 +1,8 @@
 export class Player {
-  id: string;
+  id: PropertyKey;
   character: any;
 
-  constructor(id: string, character: any) {
+  constructor(id: PropertyKey, character: any) {
     this.id = id;
     this.character = character;
   }

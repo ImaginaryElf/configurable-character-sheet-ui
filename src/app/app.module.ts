@@ -17,6 +17,10 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { GameComponent } from './game/game.component';
+import { CharacterComponent } from './character/character.component';
+import { CharSheetComponent } from './components/char-sheet/char-sheet.component';
+import { GameInfoComponent } from './components/game-info/game-info.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +29,10 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     UserInfoComponent,
     AuthButtonComponent,
     UserComponent,
+    GameComponent,
+    CharacterComponent,
+    CharSheetComponent,
+    GameInfoComponent,
   ],
   imports: [
     BrowserModule,
