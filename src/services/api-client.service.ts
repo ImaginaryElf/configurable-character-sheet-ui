@@ -23,18 +23,23 @@ export class ApiClientService {
   ) {
     const params = new HttpParams();
     if (gmId) {
+      console.log(gmId);
       params.set('gm_id', gmId);
     }
     if (playerId) {
+      console.log(playerId);
       params.set('player_id', playerId);
     }
     if (gameId) {
+      console.log(gameId);
       params.set('game_id', gameId);
     }
     if (characterId) {
+      console.log(characterId);
       params.set('character_id', characterId);
     }
-    return this.http.get(`${this.apiBaseUrl}/game`, { params }).pipe(
+    console.log(`${this.apiBaseUrl}/game?${params.toString()}`);
+    return this.http.get(`${this.apiBaseUrl}/game?${params.toString()}`).pipe(
       tap((result) => {
         console.log(result);
         const response = result as ApiResponse;
