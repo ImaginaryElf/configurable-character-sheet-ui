@@ -19,8 +19,8 @@ import { MatListModule } from '@angular/material/list';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { GameComponent } from './game/game.component';
 import { CharacterComponent } from './character/character.component';
-import { CharSheetComponent } from './components/char-sheet/char-sheet.component';
-import { GameInfoComponent } from './components/game-info/game-info.component';
+import { GameListComponent } from './game-list/game-list.component';
+import { CharListComponent } from './char-list/char-list.component';
 
 @NgModule({
   declarations: [
@@ -31,8 +31,8 @@ import { GameInfoComponent } from './components/game-info/game-info.component';
     UserComponent,
     GameComponent,
     CharacterComponent,
-    CharSheetComponent,
-    GameInfoComponent,
+    GameListComponent,
+    CharListComponent,
   ],
   imports: [
     BrowserModule,

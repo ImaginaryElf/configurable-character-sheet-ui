@@ -9,5 +9,7 @@
 </ng-container>
 
 <ng-template #loggedOut>
-  <button (click)="auth.loginWithRedirect()">Login</button>
+  <button mat-flat-button color="accent" (click)="auth.loginWithRedirect()">
+    Login
+  </button>
 </ng-template>
