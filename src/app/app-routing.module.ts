@@ -7,11 +7,11 @@ import { GameComponent } from './game/game.component';
 import { CharacterComponent } from './character/character.component';
 
 const routes: Routes = [
-  { path: '/', component: HomeComponent },
-  { path: '/user', component: UserComponent, canActivate: [AuthGuard] },
-  { path: '/games/:id', component: GameComponent, canActivate: [AuthGuard] },
+  { path: '', component: HomeComponent, pathMatch: 'full' },
+  { path: 'user', component: UserComponent, canActivate: [AuthGuard] },
+  { path: 'games/:id', component: GameComponent, canActivate: [AuthGuard] },
   {
-    path: '/characters/:id',
+    path: 'characters/:id',
     component: CharacterComponent,
     canActivate: [AuthGuard],
   },
