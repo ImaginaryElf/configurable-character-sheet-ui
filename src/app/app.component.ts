@@ -34,9 +34,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.subscriptions.add(
       this.auth.user$.subscribe((u) => {
         if (u && u.email) {
-          this.apiClient.getGames(u.email, u.email, '', '').subscribe(
-            (result) => console.log(JSON.stringify(result))
-          );
+          this.apiClient.getGames(u.email, u.email, '', '').subscribe();
         }
       })
     );

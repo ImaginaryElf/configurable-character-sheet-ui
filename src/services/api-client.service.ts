@@ -44,19 +44,21 @@ export class ApiClientService {
       tap((result) => {
         const response = result as ApiResponse;
         if (response && response.status) {
-          this.gameRepo.updateGames(
-            response.data.map(
-              (g: any) =>
-                new Game(
-                  g['_id']['$oid'],
-                  g['gm_id'],
-                  g['name'],
-                  g['schema'],
-                  g['layout'],
-                  g['players']
-                )
-            )
-          );
+          this.gameRepo.updateGames([
+            ...new Set<Game>(
+              response.data.map(
+                (g: any) =>
+                  new Game(
+                    g['_id']['$oid'],
+                    g['gm_id'],
+                    g['name'],
+                    g['schema'],
+                    g['layout'],
+                    g['players']
+                  )
+              )
+            ),
+          ]);
         }
       })
     );
