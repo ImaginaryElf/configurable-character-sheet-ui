@@ -1,9 +1,9 @@
 export class Player {
   id: PropertyKey;
-  character: any;
+  characters: any[];
 
-  constructor(id: PropertyKey, character: any) {
+  constructor(id: PropertyKey, characters: any[]) {
     this.id = id;
-    this.character = character;
+    this.characters = characters;
   }
 }

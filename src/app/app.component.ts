@@ -35,12 +35,10 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.subscriptions.add(
       this.auth.user$.subscribe((u) => {
-        console.log(JSON.stringify(u));
         if (u && u.email) {
-          console.log(u.nickname);
           this.subscriptions.add(
             this.apiClient.getGames(u.email, u.email, '', '').subscribe((r) => {
-              console.log(JSON.stringify(r));
+              console.log("api response:" + JSON.stringify(r));
             })
           );
         }
@@ -49,13 +47,13 @@ export class AppComponent implements OnInit, OnDestroy {
     this.subscriptions.add(
       this.gameRepo.games$.subscribe((g) => {
         this.games = g;
-        console.log(JSON.stringify(this.games));
+        console.log("games store:" + JSON.stringify(this.games));
       })
     );
     this.subscriptions.add(
       this.gameRepo.characters$.subscribe((c) => {
         this.characters = c;
-        console.log(JSON.stringify(this.characters));
+        console.log("characters store:" + JSON.stringify(this.characters));
       })
     );
   }
