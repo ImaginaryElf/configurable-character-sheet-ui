@@ -36,6 +36,7 @@ export class ApiClientService {
     }
     return this.http.get(`${this.apiBaseUrl}/game`, { params }).pipe(
       tap((result) => {
+        console.log(result);
         const response = result as ApiResponse;
         if (response && response.status) {
           this.gameRepo.updateGames(
