@@ -35,6 +35,7 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.subscriptions.add(
       this.auth.user$.subscribe((u) => {
+        console.log(JSON.stringify(u));
         if (u && u.email) {
           this.apiClient.getGames(u.email, u.email, '', '');
         }
