@@ -175,3 +175,7 @@ $breakpoint-large: 60em; // 960px
     display: block;
   }
 }
+
+.mat-draw-container {
+  min-height: 100vh;
+}
