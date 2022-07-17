@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { distinctUntilChanged, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { GameRepository } from '../../repositories/game.repository';
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -12,12 +11,10 @@ import { ActivatedRoute } from '@angular/router';
 export class CharListComponent implements OnInit, OnDestroy {
   userId: string | undefined;
   characterList: any[] | undefined;
-  cardStyles = { row: 1, col: 3 };
   subscriptions: Subscription = new Subscription();
 
   constructor(
     public gameRepo: GameRepository,
-    private breakpointObserver: BreakpointObserver,
     private activatedRoute: ActivatedRoute
   ) {}
 
@@ -33,21 +30,11 @@ export class CharListComponent implements OnInit, OnDestroy {
           g.players
             .filter((p: any) => p.id == this.userId)
             .flatMap((p: any) => p.characters)
+            .map((c: any) => {
+              return { ...c, gameName: g.name };
+            })
         );
       })
-    );
-
-    this.subscriptions.add(
-      this.breakpointObserver
-        .observe([Breakpoints.Handset, Breakpoints.Medium])
-        .pipe(distinctUntilChanged())
-        .subscribe((bp) => {
-          if (this.breakpointObserver.isMatched(Breakpoints.Handset)) {
-            this.cardStyles = { row: 1, col: 1 };
-          } else if (this.breakpointObserver.isMatched(Breakpoints.Medium)) {
-            this.cardStyles = { row: 1, col: 6 };
-          }
-        })
     );
   }
 
