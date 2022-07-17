@@ -1,1 +1,26 @@
-<p>char-list works!</p>
+<div class="grid-container">
+  <h1 class="mat-h1">Games</h1>
+  <mat-grid-list cols="12" rowHeight="300px">
+    <mat-grid-tile
+      *ngFor="let character of characterList"
+      [rowspan]="cardStyles.row"
+      [colspan]="cardStyles.col"
+    >
+      <mat-card class="dashboard-card">
+        <mat-card-header>
+          <mat-card-title>
+            {{ character.characterName }}
+            <button
+              mat-flat-button
+              color="primary"
+              [routerLink]="['/character', character.id]"
+            >
+              View
+            </button>
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="dashboard-card-content"> </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+  </mat-grid-list>
+</div>

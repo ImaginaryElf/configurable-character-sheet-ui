@@ -14,12 +14,12 @@ const routes: Routes = [
   { path: 'games', component: GameListComponent, canActivate: [AuthGuard] },
   { path: 'game/:id', component: GameComponent, canActivate: [AuthGuard] },
   {
-    path: 'characters',
+    path: 'characters/:uid',
     component: CharListComponent,
     canActivate: [AuthGuard],
   },
   {
-    path: 'characters/:id',
+    path: 'character/:id',
     component: CharacterComponent,
     canActivate: [AuthGuard],
   },

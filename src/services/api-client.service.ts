@@ -43,22 +43,25 @@ export class ApiClientService {
     return this.http.get(`${this.apiBaseUrl}/game?${params.join('&')}`).pipe(
       tap((result) => {
         const response = result as ApiResponse;
-        if (response && response.status) {
-          this.gameRepo.updateGames([
-            ...new Set<Game>(
-              response.data.map(
-                (g: any) =>
-                  new Game(
-                    g['_id']['$oid'],
-                    g['gm_id'],
-                    g['name'],
-                    g['schema'],
-                    g['layout'],
-                    g['players']
-                  )
-              )
-            ),
-          ]);
+        if (response && response.status && response.data.length > 0) {
+          const uniqueGameIds = [
+            ...new Set(response.data.map((g: any) => g['_id']['$oid'])),
+          ];
+          this.gameRepo.updateGames(
+            uniqueGameIds.map((id: any) => {
+              const game = response.data.first(
+                (g: any) => g['_id']['$oid'] == id
+              );
+              return new Game(
+                game['_id']['$oid'],
+                game['gm_id'],
+                game['name'],
+                game['schema'],
+                game['layout'],
+                game['players']
+              );
+            })
+          );
         }
       })
     );

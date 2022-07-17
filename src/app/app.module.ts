@@ -21,6 +21,9 @@ import { GameComponent } from './game/game.component';
 import { CharacterComponent } from './character/character.component';
 import { GameListComponent } from './game-list/game-list.component';
 import { CharListComponent } from './char-list/char-list.component';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatCardModule } from '@angular/material/card';
+import { MatMenuModule } from '@angular/material/menu';
 
 @NgModule({
   declarations: [
@@ -59,6 +62,9 @@ import { CharListComponent } from './char-list/char-list.component';
     MatIconModule,
     MatListModule,
     MatProgressSpinnerModule,
+    MatGridListModule,
+    MatCardModule,
+    MatMenuModule,
   ],
   providers: [
     {

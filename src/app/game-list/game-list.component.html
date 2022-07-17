@@ -1,1 +1,37 @@
-<p>game-list works!</p>
+<div class="grid-container">
+  <h1 class="mat-h1">Games</h1>
+  <mat-grid-list cols="12" rowHeight="350px">
+    <mat-grid-tile
+      *ngFor="let game of this.gameRepo.games$ | async"
+      [rowspan]="cardStyles.row"
+      [colspan]="cardStyles.col"
+    >
+      <mat-card class="dashboard-card">
+        <mat-card-header>
+          <mat-card-title>
+            {{ game.name }}
+            <button
+              mat-flat-button
+              color="primary"
+              [routerLink]="['/game', game.id]"
+            >
+              View
+            </button>
+            <button mat-flat-button color="primary">Add player</button>
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="dashboard-card-content">
+          <div>Characters</div>
+          <div class="row">
+            <div class="col-6-sm col-3" *ngFor="let player of game.players">
+              <div class="mat-subheading-1">Player: {{ player.id }}</div>
+              <div *ngFor="let character of player.characters">
+                Character: {{ character.characterName }}
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+  </mat-grid-list>
+</div>

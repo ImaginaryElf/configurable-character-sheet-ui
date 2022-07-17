@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+import { distinctUntilChanged, Observable, Subscription } from 'rxjs';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { map, shareReplay } from 'rxjs/operators';
 import { AuthService } from '@auth0/auth0-angular';
@@ -32,7 +32,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subscriptions.add(
-      this.auth.user$.subscribe((u) => {
+      this.auth.user$.pipe(distinctUntilChanged()).subscribe((u) => {
         if (u && u.email) {
           this.apiClient.getGames(u.email, u.email, '', '').subscribe();
         }
