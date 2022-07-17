@@ -1,10 +1,9 @@
-<div class="grid-container">
+<div class="container">
   <h1 class="mat-h1">Games</h1>
-  <mat-grid-list cols="12" rowHeight="350px">
-    <mat-grid-tile
+  <div class="row">
+    <div
+      class="col-6-sm col-3"
       *ngFor="let game of this.gameRepo.games$ | async"
-      [rowspan]="cardStyles.row"
-      [colspan]="cardStyles.col"
     >
       <mat-card class="dashboard-card">
         <mat-card-header>
@@ -32,6 +31,6 @@
           </div>
         </mat-card-content>
       </mat-card>
-    </mat-grid-tile>
-  </mat-grid-list>
+    </div>
+  </div>
 </div>

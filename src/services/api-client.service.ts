@@ -67,11 +67,28 @@ export class ApiClientService {
     );
   }
 
-  addGame(game: object) {
-    this.http.post(`${this.apiBaseUrl}/game`, game);
+  addGame(game: Game) {
+    const gameRequest = {
+      gm_id: game.gm_id,
+      name: game.name,
+      schema: game.schema,
+      layout: game.layout,
+      players: game.players,
+    };
+    this.http.post(`${this.apiBaseUrl}/game`, gameRequest);
   }
 
-  updateGame(game: object) {
-    this.http.put(`${this.apiBaseUrl}/game`, game);
+  updateGame(game: Game) {
+    const gameRequest = {
+      _id: {
+        $oid: game.id,
+      },
+      gm_id: game.gm_id,
+      name: game.name,
+      schema: game.schema,
+      layout: game.layout,
+      players: game.players,
+    };
+    this.http.put(`${this.apiBaseUrl}/game`, gameRequest);
   }
 }

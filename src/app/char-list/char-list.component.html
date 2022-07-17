@@ -1,11 +1,7 @@
-<div class="grid-container">
+<div class="container">
   <h1 class="mat-h1">Games</h1>
-  <mat-grid-list cols="12" rowHeight="300px">
-    <mat-grid-tile
-      *ngFor="let character of characterList"
-      [rowspan]="cardStyles.row"
-      [colspan]="cardStyles.col"
-    >
+  <div class="row">
+    <div class="col-6-sm col-3" *ngFor="let character of characterList">
       <mat-card class="dashboard-card">
         <mat-card-header>
           <mat-card-title>
@@ -21,6 +17,6 @@
         </mat-card-header>
         <mat-card-content class="dashboard-card-content"> </mat-card-content>
       </mat-card>
-    </mat-grid-tile>
-  </mat-grid-list>
+    </div>
+  </div>
 </div>

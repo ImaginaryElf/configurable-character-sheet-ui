@@ -14,7 +14,7 @@
       <mat-toolbar color="primary" *ngIf="auth.user$ | async as user">{{
         user.nickname
       }}</mat-toolbar>
-      <mat-nav-list>
+      <mat-nav-list (click)="drawer.close()">
         <a mat-list-item [routerLink]="['/']" routerLinkActive="active">Home</a>
         <a
           *ngIf="auth.user$ | async as user"
