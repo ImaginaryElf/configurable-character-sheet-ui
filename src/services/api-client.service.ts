@@ -49,7 +49,7 @@ export class ApiClientService {
           ];
           this.gameRepo.updateGames(
             uniqueGameIds.map((id: any) => {
-              const game = response.data.first(
+              const game = response.data.find(
                 (g: any) => g['_id']['$oid'] == id
               );
               return new Game(
