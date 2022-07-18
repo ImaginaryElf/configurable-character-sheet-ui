@@ -1,36 +1,50 @@
 <div class="container pt-2">
   <h1 class="mat-h1">Games</h1>
   <div class="row">
-    <div
-      class="col-12-sm col-6"
-      *ngFor="let game of this.gameRepo.games$ | async"
-    >
-      <mat-card class="dashboard-card">
-        <mat-card-header>
-          <mat-card-title>
-            {{ game.name }}
-            <button
-              mat-flat-button
-              color="primary"
-              [routerLink]="['/game', game.id]"
-            >
-              View
-            </button>
-            <button mat-flat-button color="primary">Add player</button>
-          </mat-card-title>
-        </mat-card-header>
-        <mat-card-content class="dashboard-card-content">
-          <div>Characters</div>
-          <div class="row">
-            <div class="col-6-sm col-3" *ngFor="let player of game.players">
-              <div class="mat-subheading-1">Player: {{ player.id }}</div>
-              <div *ngFor="let character of player.characters">
-                Character: {{ character.characterName }}
-              </div>
-            </div>
-          </div>
-        </mat-card-content>
-      </mat-card>
+    <div class="col-12-sm col-6" *ngFor="let game of gmGames">
+      <ng-container
+        [ngTemplateOutlet]="gameCard"
+        [ngTemplateOutletContext]="{ gameItem: { game: game, isGm: true } }"
+      ></ng-container>
     </div>
+    <ng-container *ngFor="let game of playerGames">
+      <div class="col-12-sm col-6" *ngIf="gameShouldDisplay(game.id)">
+        <ng-container
+          [ngTemplateOutlet]="gameCard"
+          [ngTemplateOutletContext]="{ gameItem: { game: game, isGm: false } }"
+        ></ng-container>
+      </div>
+    </ng-container>
   </div>
 </div>
+
+<ng-template #gameCard let-gameItem="gameItem">
+  <mat-card class="dashboard-card">
+    <mat-card-header>
+      <mat-card-title>
+        {{ gameItem.game.name }}
+        <button
+          mat-flat-button
+          color="primary"
+          [routerLink]="['/game', gameItem.game.id]"
+        >
+          View
+        </button>
+        <button mat-flat-button color="primary" *ngIf="gameItem.isGm">
+          Add player
+        </button>
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content class="dashboard-card-content">
+      <div>Characters</div>
+      <div class="row" *ngFor="let player of gameItem.game.players">
+        <div class="col-12">
+          <div class="mat-subheading-1">Player: {{ player.id }}</div>
+          <div *ngFor="let character of player.characters">
+            Character: {{ character.characterName }}
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</ng-template>

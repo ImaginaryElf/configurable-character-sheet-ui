@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { GameRepository } from '../../repositories/game.repository';
-import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-char-list',
@@ -9,31 +8,15 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./char-list.component.scss'],
 })
 export class CharListComponent implements OnInit, OnDestroy {
-  userId: string | undefined;
   characterList: any[] | undefined;
   subscriptions: Subscription = new Subscription();
 
-  constructor(
-    public gameRepo: GameRepository,
-    private activatedRoute: ActivatedRoute
-  ) {}
+  constructor(private gameRepo: GameRepository) {}
 
   ngOnInit(): void {
     this.subscriptions.add(
-      this.activatedRoute.paramMap.subscribe((params: any) => {
-        this.userId = params.get('uid');
-      })
-    );
-    this.subscriptions.add(
-      this.gameRepo.games$.subscribe((gl) => {
-        this.characterList = gl.flatMap((g: any) =>
-          g.players
-            .filter((p: any) => p.id == this.userId)
-            .flatMap((p: any) => p.characters)
-            .map((c: any) => {
-              return { ...c, gameName: g.name };
-            })
-        );
+      this.gameRepo.characterList$.subscribe((cl) => {
+        this.characterList = cl;
       })
     );
   }

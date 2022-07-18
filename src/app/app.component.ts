@@ -14,7 +14,8 @@ import { Game } from '../models/game';
 })
 export class AppComponent implements OnInit, OnDestroy {
   title = 'Configurable Character Sheet';
-  games: Game[] | undefined;
+  gmGames: Game[] | undefined;
+  playerGames: Game[] | undefined;
   isHandset$: Observable<boolean> = this.breakpointObserver
     .observe(Breakpoints.Handset)
     .pipe(
@@ -34,14 +35,20 @@ export class AppComponent implements OnInit, OnDestroy {
     this.subscriptions.add(
       this.auth.user$.pipe(distinctUntilChanged()).subscribe((u) => {
         if (u && u.email) {
-          this.apiClient.getGames(u.email, u.email, '', '').subscribe();
+          this.apiClient.getGamesByGm(u.email).subscribe();
+          this.apiClient.getGamesByPlayer(u.email).subscribe();
         }
       })
     );
     this.subscriptions.add(
-      this.gameRepo.games$.subscribe((g) => {
-        this.games = g;
-        console.log('games store:' + JSON.stringify(this.games));
+      this.gameRepo.gmGames$.subscribe((g) => {
+        this.gmGames = g;
+      })
+    );
+
+    this.subscriptions.add(
+      this.gameRepo.playerGames$.subscribe((g) => {
+        this.playerGames = g;
       })
     );
   }

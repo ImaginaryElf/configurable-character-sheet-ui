@@ -9,20 +9,30 @@ import { GameRepository } from '../../repositories/game.repository';
   styleUrls: ['./game-list.component.scss'],
 })
 export class GameListComponent implements OnInit, OnDestroy {
-  gameList: Game[] | undefined;
+  gmGames: Game[] = [];
+  playerGames: Game[] = [];
   subscriptions: Subscription = new Subscription();
 
   constructor(public gameRepo: GameRepository) {}
 
   ngOnInit(): void {
     this.subscriptions.add(
-      this.gameRepo.games$.subscribe((gl) => {
-        this.gameList = gl;
+      this.gameRepo.gmGames$.subscribe((gl) => {
+        this.gmGames = gl;
+      })
+    );
+    this.subscriptions.add(
+      this.gameRepo.playerGames$.subscribe((gl) => {
+        this.playerGames = gl;
       })
     );
   }
 
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
+  }
+
+  gameShouldDisplay(id: string) {
+    return this.gmGames.findIndex((g) => g.id == id) == -1;
   }
 }

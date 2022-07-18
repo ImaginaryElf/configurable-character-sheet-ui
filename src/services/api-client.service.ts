@@ -9,6 +9,17 @@ export interface ApiResponse {
   data: any;
 }
 
+function createGameObject(responseData: any) {
+  return new Game(
+    responseData['_id']['$oid'],
+    responseData['gm_id'],
+    responseData['name'],
+    responseData['schema'],
+    responseData['layout'],
+    responseData['players']
+  );
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -16,55 +27,77 @@ export class ApiClientService {
   apiBaseUrl = 'https://configurable-sheet-api-prod.herokuapp.com';
   constructor(private http: HttpClient, private gameRepo: GameRepository) {}
 
-  getGames(
-    gmId: string,
-    playerId: string,
-    gameId: string,
-    characterId: string
-  ) {
-    const params = [];
-    if (gmId) {
-      console.log(gmId);
-      params.push(`gm_id=${gmId}`);
-    }
-    if (playerId) {
-      console.log(playerId);
-      params.push(`player_id=${playerId}`);
-    }
-    if (gameId) {
-      console.log(gameId);
-      params.push(`game_id=${gameId}`);
-    }
-    if (characterId) {
-      console.log(characterId);
-      params.push(`character_id=${characterId}`);
-    }
-
-    return this.http.get(`${this.apiBaseUrl}/game?${params.join('&')}`).pipe(
+  getGameById(gameId: string) {
+    return this.http.get(`${this.apiBaseUrl}/game?game_id=${gameId}`).pipe(
       tap((result) => {
         const response = result as ApiResponse;
         if (response && response.status && response.data.length > 0) {
-          const uniqueGameIds = [
-            ...new Set(response.data.map((g: any) => g['_id']['$oid'])),
-          ];
-          this.gameRepo.updateGames(
-            uniqueGameIds.map((id: any) => {
-              const game = response.data.find(
-                (g: any) => g['_id']['$oid'] == id
-              );
-              return new Game(
-                game['_id']['$oid'],
-                game['gm_id'],
-                game['name'],
-                game['schema'],
-                game['layout'],
-                game['players']
-              );
-            })
+          this.gameRepo.updateCurrentGame(createGameObject(response.data[0]));
+        }
+      })
+    );
+  }
+
+  getGamesByPlayer(playerId: string) {
+    return this.http.get(`${this.apiBaseUrl}/game?player_id=${playerId}`).pipe(
+      tap((result) => {
+        const response = result as ApiResponse;
+        if (response && response.status && response.data.length > 0) {
+          this.gameRepo.updatePlayerGames(
+            response.data.map((g: any) => createGameObject(g))
+          );
+
+          this.gameRepo.updateCharacterList(
+            response.data.flatMap((g: any) =>
+              g.players
+                .flatMap((p: any) => p.characters)
+                .map((c: any) => {
+                  return { ...c, gameName: g.name };
+                })
+            )
           );
         }
       })
     );
+  }
+
+  getGamesByGm(gmId: string) {
+    return this.http.get(`${this.apiBaseUrl}/game?gm_id=${gmId}`).pipe(
+      tap((result) => {
+        const response = result as ApiResponse;
+        if (response && response.status && response.data.length > 0) {
+          this.gameRepo.updateGmGames(
+            response.data.map((g: any) => createGameObject(g))
+          );
+        }
+      })
+    );
+  }
+
+  getGamesByCharacter(characterId: string) {
+    return this.http
+      .get(`${this.apiBaseUrl}/game?character_id=${characterId}`)
+      .pipe(
+        tap((result) => {
+          const response = result as ApiResponse;
+          if (response && response.status && response.data.length > 0) {
+            this.gameRepo.updateCurrentGame(createGameObject(response.data[0]));
+          }
+        })
+      );
+  }
+
+  getCharacterById(characterId: string) {
+    return this.http
+      .get(`${this.apiBaseUrl}/character?character_id=${characterId}`)
+      .pipe(
+        tap((result) => {
+          const response = result as ApiResponse;
+          if (response && response.status && response.data.length > 0) {
+            this.gameRepo.updateCurrentCharacter(response.data[0]);
+          }
+        })
+      );
   }
 
   addGame(game: Game) {

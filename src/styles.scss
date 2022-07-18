@@ -192,7 +192,6 @@ $spaceAmounts: (1, 2, 3, 4, 5, 6, 7, 8, auto);
     .my-#{$space} {
       margin-top: #{$space};
       margin-bottom: #{$space};
-
     }
 
     .ml-#{$space} {
@@ -210,9 +209,7 @@ $spaceAmounts: (1, 2, 3, 4, 5, 6, 7, 8, auto);
     .mt-#{$space} {
       margin-top: #{$space};
     }
-  }
-
-  @else {
+  } @else {
     .m-#{$space} {
       margin: #{$space}rem;
     }
@@ -225,7 +222,6 @@ $spaceAmounts: (1, 2, 3, 4, 5, 6, 7, 8, auto);
     .my-#{$space} {
       margin-top: #{$space}rem;
       margin-bottom: #{$space}rem;
-
     }
 
     .ml-#{$space} {
@@ -256,7 +252,6 @@ $spaceAmounts: (1, 2, 3, 4, 5, 6, 7, 8, auto);
     .py-#{$space} {
       padding-top: #{$space}rem;
       padding-bottom: #{$space}rem;
-
     }
 
     .pl-#{$space} {

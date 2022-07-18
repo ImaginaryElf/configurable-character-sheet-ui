@@ -33,7 +33,7 @@
         <a
           *ngIf="auth.user$ | async as user"
           mat-list-item
-          [routerLink]="['/characters', user.email]"
+          [routerLink]="['/characters']"
           routerLinkActive="active"
           >Characters</a
         >
