@@ -32,7 +32,7 @@ export class GameListComponent implements OnInit, OnDestroy {
     this.subscriptions.unsubscribe();
   }
 
-  gameShouldDisplay(id: string) {
+  gameShouldDisplay(id: PropertyKey) {
     return this.gmGames.findIndex((g) => g.id == id) == -1;
   }
 }
