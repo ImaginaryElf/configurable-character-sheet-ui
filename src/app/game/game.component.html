@@ -1,1 +1,27 @@
-<p>game works!</p>
+<div class="container pt-2">
+  <h1 class="mat-h1">{{ game.name }}</h1>
+  <h2 class="mat-h2">GM: {{ game.gm_id }}</h2>
+  <div class="row">
+    <ng-container *ngFor="let player of game.players">
+      <div class="col-12-sm col-4" *ngFor="let character of player.characters">
+        <mat-card class="dashboard-card">
+          <mat-card-header>
+            <mat-card-title>
+              {{ character.characterName }}
+            </mat-card-title>
+          </mat-card-header>
+          <mat-card-content class="dashboard-card-content">
+            <div>Player: {{ player.id }}</div>
+            <button
+              mat-flat-button
+              color="primary"
+              [routerLink]="['/character', character.id]"
+            >
+              View
+            </button>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </ng-container>
+  </div>
+</div>

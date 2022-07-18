@@ -5,10 +5,13 @@
       <mat-card class="dashboard-card">
         <mat-card-header>
           <mat-card-title>
-            {{ character.characterName }} - {{ character.gameName }}
+            {{ character.characterName }}
           </mat-card-title>
         </mat-card-header>
         <mat-card-content class="dashboard-card-content">
+          <mat-card-subtitle class="mb-1">{{
+            character.gameName
+          }}</mat-card-subtitle>
           <button
             mat-flat-button
             color="primary"
