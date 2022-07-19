@@ -1,0 +1,42 @@
+<mat-label>{{ layout.label }}</mat-label>
+<mat-table
+  [formArrayName]="layout.dataField"
+  [dataSource]="parentForm.getRawValue()"
+>
+  <ng-container
+    [cdkColumnDef]="layout.tableMappings[tableHeading]"
+    *ngFor="let tableHeading of layout.tableHeadings; let i = index"
+  >
+    <mat-header-cell *cdkHeaderCellDef> {{ tableHeading }} </mat-header-cell>
+    <mat-cell
+      *cdkCellDef="let row; let rowIndex = index"
+      [formGroupName]="rowIndex"
+    >
+      <input
+        type="text"
+        size="2"
+        [formControlName]="layout.tableMappings[tableHeading]"
+      />
+    </mat-cell>
+  </ng-container>
+
+  <ng-container cdkColumnDef="action">
+    <mat-header-cell *cdkHeaderCellDef></mat-header-cell>
+    <mat-cell
+      *cdkCellDef="let row; let rowIndex = index"
+      [formGroupName]="rowIndex"
+    >
+      <button
+        mat-flat-button
+        color="primary"
+        (click)="removeItem(rowIndex)"
+      ></button>
+    </mat-cell>
+  </ng-container>
+
+  <!-- Header and Row Declarations -->
+  <mat-header-row *cdkHeaderRowDef="getDisplayColumns()"></mat-header-row>
+  <mat-row *cdkRowDef="let row; columns: getDisplayColumns()"></mat-row>
+</mat-table>
+
+<button mat-flat-button color="primary" (click)="addItem()"></button>

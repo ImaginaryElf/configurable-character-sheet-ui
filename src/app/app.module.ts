@@ -24,6 +24,19 @@ import { CharListComponent } from './char-list/char-list.component';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatCardModule } from '@angular/material/card';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatTabsModule } from '@angular/material/tabs';
+import { TextInputComponent } from './components/text-input/text-input.component';
+import { NumberInputComponent } from './components/number-input/number-input.component';
+import { NullInputComponent } from './components/null-input/null-input.component';
+import { ListInputComponent } from './components/list-input/list-input.component';
+import { TableInputComponent } from './components/table-input/table-input.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatTableModule } from '@angular/material/table';
+import { CdkTableModule } from '@angular/cdk/table';
+import { BoolInputComponent } from './components/bool-input/bool-input.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [
@@ -36,6 +49,12 @@ import { MatMenuModule } from '@angular/material/menu';
     CharacterComponent,
     GameListComponent,
     CharListComponent,
+    TextInputComponent,
+    NumberInputComponent,
+    NullInputComponent,
+    ListInputComponent,
+    TableInputComponent,
+    BoolInputComponent,
   ],
   imports: [
     BrowserModule,
@@ -65,6 +84,13 @@ import { MatMenuModule } from '@angular/material/menu';
     MatGridListModule,
     MatCardModule,
     MatMenuModule,
+    MatTabsModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatTableModule,
+    CdkTableModule,
+    MatCheckboxModule,
   ],
   providers: [
     {

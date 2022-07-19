@@ -74,7 +74,7 @@ export class ApiClientService {
     );
   }
 
-  getGamesByCharacter(characterId: string) {
+  getGameByCharacter(characterId: string) {
     return this.http
       .get(`${this.apiBaseUrl}/game?character_id=${characterId}`)
       .pipe(
@@ -82,19 +82,6 @@ export class ApiClientService {
           const response = result as ApiResponse;
           if (response && response.status && response.data.length > 0) {
             this.gameRepo.updateCurrentGame(createGameObject(response.data[0]));
-          }
-        })
-      );
-  }
-
-  getCharacterById(characterId: string) {
-    return this.http
-      .get(`${this.apiBaseUrl}/character?character_id=${characterId}`)
-      .pipe(
-        tap((result) => {
-          const response = result as ApiResponse;
-          if (response && response.status && response.data.length > 0) {
-            this.gameRepo.updateCurrentCharacter(response.data[0]);
           }
         })
       );

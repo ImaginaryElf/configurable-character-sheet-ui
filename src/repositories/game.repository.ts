@@ -20,7 +20,6 @@ const characterListStore = createStore(
   { name: 'characterList' },
   withEntities<any>()
 );
-const characterStore = createStore({ name: 'character' }, withProps<any>(null));
 
 @Injectable({ providedIn: 'root' })
 export class GameRepository {
@@ -29,7 +28,6 @@ export class GameRepository {
   playerGames$ = playerGamesStore.pipe(selectAllEntities());
   game$ = gameStore.pipe(select((state) => state));
   characterList$ = characterListStore.pipe(selectAllEntities());
-  character$ = characterStore.pipe(select((state) => state));
 
   updateGmGames(gmGames: Game[]) {
     gmGamesStore.update(setEntities(gmGames));
@@ -48,12 +46,5 @@ export class GameRepository {
 
   updateCharacterList(characterList: any[]) {
     characterListStore.update(setEntities(characterList));
-  }
-
-  updateCurrentCharacter(character: any) {
-    characterStore.update((state) => ({
-      ...state,
-      ...character,
-    }));
   }
 }

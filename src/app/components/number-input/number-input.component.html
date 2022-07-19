@@ -1,0 +1,9 @@
+<mat-form-field [formGroup]="parentForm">
+  <mat-label>{{ layout.label }}</mat-label>
+  <input
+    matInput
+    [id]="layout.dataField"
+    type="number"
+    [formControlName]="controlName"
+  />
+</mat-form-field>

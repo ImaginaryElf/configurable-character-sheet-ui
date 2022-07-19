@@ -1,0 +1,11 @@
+<mat-label>{{ layout.label }}</mat-label>
+<mat-form-field *ngFor="let formItem of parentForm.controls; let i = index">
+  <input
+    matInput
+    [id]="layout.dataField + i"
+    type="text"
+    [formControl]="$any(formItem)"
+  />
+  <button mat-flat-button color="primary" (click)="removeItem(i)"></button>
+</mat-form-field>
+<button mat-flat-button color="primary" (click)="addItem()"></button>
