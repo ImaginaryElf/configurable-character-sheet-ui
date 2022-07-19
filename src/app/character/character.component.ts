@@ -1,16 +1,11 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { GameRepository } from '../../repositories/game.repository';
-import { ActivatedRoute } from '@angular/router';
-import { ApiClientService } from '../../services/api-client.service';
-import { Game } from '../../models/game';
-import {
-  AbstractControl,
-  FormArray,
-  FormControl,
-  FormGroup,
-} from '@angular/forms';
-import { get } from 'lodash-es';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Subscription} from 'rxjs';
+import {GameRepository} from '../../repositories/game.repository';
+import {ActivatedRoute} from '@angular/router';
+import {ApiClientService} from '../../services/api-client.service';
+import {Game} from '../../models/game';
+import {AbstractControl, FormArray, FormControl, FormGroup,} from '@angular/forms';
+import {flattenDeep, get} from 'lodash-es';
 
 @Component({
   selector: 'app-character',
@@ -22,7 +17,7 @@ export class CharacterComponent implements OnInit, OnDestroy {
   character: any;
   game: Game | undefined;
   subscriptions: Subscription = new Subscription();
-  form!: FormGroup;
+  form: FormGroup = new FormGroup({});
 
   constructor(
     private gameRepo: GameRepository,
@@ -39,10 +34,13 @@ export class CharacterComponent implements OnInit, OnDestroy {
     );
     this.subscriptions.add(
       this.gameRepo.game$.subscribe((game) => {
+        if(!game?.layout?.tabs || !game?.players) {
+          return;
+        }
         this.game = game;
         const characters = game?.players?.flatMap((p: any) => p.characters);
         this.character = characters?.find((c: any) => c.id == this.characterId);
-        this.constructForm();
+        this.constructForm(game);
       })
     );
   }
@@ -51,19 +49,21 @@ export class CharacterComponent implements OnInit, OnDestroy {
     this.subscriptions.unsubscribe();
   }
 
-  constructForm() {
-    const layoutControls: any[] = [];
-    this.game?.layout.tabs.forEach((t: any) => {
-      if (t.rows) {
-        layoutControls.push(this.getLayoutControls(t.rows));
+  constructForm(game: Game) {
+    let layoutControls: any[] = [];
+    game.layout.tabs.forEach((t: any) => {
+      if (t.layout.rows) {
+        const controls = this.getLayoutControls(t.layout.rows);
+        layoutControls.push(controls);
       }
     });
-    if (layoutControls.length < 0 || !this.game || !this.character) {
+    layoutControls = flattenDeep(layoutControls);
+    if (layoutControls.length < 0 || !game || !this.character) {
       return;
     }
     this.constructFormControls(
-      [],
-      [],
+      '',
+      '',
       this.character,
       layoutControls,
       this.form
@@ -71,22 +71,29 @@ export class CharacterComponent implements OnInit, OnDestroy {
   }
 
   getLayoutControls(rows: any[]) {
-    return rows.flatMap((r) => {
+    let controls: any[] = [];
+    rows.forEach((r) => {
+      if(r.control) {
+        controls.push(r.control);
+      }
       if (r.columns) {
-        r.columns.flatMap((c: any) => {
+        r.columns.forEach((c: any) => {
           if (c.control) {
-            return c.control;
-          } else if (c.rows) {
-            return this.getLayoutControls(c.rows);
+            controls.push(c.control);
+          }
+          if(c.rows) {
+            const subControls = this.getLayoutControls(c.rows);
+            controls.push(subControls);
           }
         });
       }
     });
+    return controls;
   }
 
   constructFormControls(
-    path: string[],
-    layoutRef: string[],
+    parentPath: string | undefined,
+    layoutPath: string | undefined,
     obj: any,
     layoutControls: any[],
     form: AbstractControl | null | undefined
@@ -94,45 +101,44 @@ export class CharacterComponent implements OnInit, OnDestroy {
     if (!obj || !form) {
       return;
     }
-
     for (const key in obj) {
-      if (obj[key] && typeof obj[key] == 'object') {
-        path.push(key);
-        layoutRef.push(key);
-        (form as FormGroup).addControl(key, new FormGroup({}));
-        this.constructFormControls(
-          path,
-          layoutRef,
-          obj[key],
-          layoutControls,
-          form?.get(key)
-        );
-      } else if (Array.isArray(obj[key]) && typeof obj[key][0] == 'object') {
-        layoutRef.push(key);
-        obj[key].forEach((item: any, index: number) => {
-          path.push(`${key}[${index}]`);
-          (form?.get(key) as FormArray).push(new FormGroup({}));
+      if(key != 'id') {
+        if (obj[key] && !Array.isArray(obj[key]) && typeof obj[key] == 'object') {
+          (form as FormGroup).addControl(key, new FormGroup({}));
           this.constructFormControls(
-            path,
-            layoutRef,
-            item,
+            `${parentPath ? parentPath + '.' : ''}${key}`,
+            `${layoutPath ? layoutPath + '.' : ''}${key}`,
+            obj[key],
             layoutControls,
-            form?.get(`${key}[${index}]`)
+            form?.get(key)
           );
-        });
-      } else if (Array.isArray(obj[key]) || obj.hasOwnProperty(key)) {
-        path.push(key);
-        layoutRef.push(key);
-        const layoutControl = layoutControls.find(
-          (lc: any) =>
-            lc.dataField ==
-            (layoutRef.length <= 1 ? layoutRef[0] : layoutRef.join('.'))
-        );
-        const control = this.constructFormControl(
-          layoutControl,
-          get(this.character, path)
-        );
-        (form as FormGroup).addControl(key, control);
+        } else if (obj[key] && Array.isArray(obj[key]) && typeof obj[key][0] == 'object') {
+          let formGroups: FormGroup[] = [];
+          obj[key].forEach((item: any, index: number) => {
+            formGroups.push(new FormGroup({}));
+            this.constructFormControls(
+              `${parentPath ? parentPath + '.' : ''}${key}[${index}]`,
+              `${layoutPath ? layoutPath + '.' : ''}${key}`,
+              item,
+              layoutControls,
+              formGroups[index]
+            );
+          });
+          (form as FormGroup).addControl(key, new FormArray(formGroups));
+        } else if (Array.isArray(obj[key]) || obj.hasOwnProperty(key)) {
+          let layoutRefString = `${layoutPath ? layoutPath + '.' : ''}${key}`;
+          if(parentPath && parentPath.lastIndexOf(']') == parentPath.length - 1) {
+            layoutRefString = layoutPath ? layoutPath : '';
+          }
+          const objectPropertyPath = `${parentPath ? parentPath + '.' : ''}${key}`;
+          const layoutControl = layoutControls.find((lc: any) => lc.dataField == layoutRefString);
+          const objectValue = get(this.character, objectPropertyPath);
+          const control = this.constructFormControl(
+            layoutControl,
+            objectValue
+          );
+          (form as FormGroup).addControl(key, control);      }
+
       }
     }
   }
@@ -141,8 +147,8 @@ export class CharacterComponent implements OnInit, OnDestroy {
     switch (layoutControl.type) {
       case 'textInput':
       case 'numericInput':
-      case 'tableInput':
       case 'boolInput':
+      case 'tableInput':
         return new FormControl(charPropValue);
       case 'listInput':
         let formControls: FormControl[] = [];
@@ -156,8 +162,12 @@ export class CharacterComponent implements OnInit, OnDestroy {
   }
 
   getParentControl(formPath: string) {
-    const path = formPath.substring(0, formPath.lastIndexOf('.'));
-    return this.form.get(path) as FormGroup;
+    if(formPath.includes('.')) {
+      const path = formPath.substring(0, formPath.lastIndexOf('.'));
+      return this.form.get(path) as FormGroup;
+    } else {
+      return this.form;
+    }
   }
 
   getFormControl(formPath: string) {
@@ -165,10 +175,14 @@ export class CharacterComponent implements OnInit, OnDestroy {
   }
 
   getControlName(formPath: string) {
-    return formPath.substring(
-      formPath.lastIndexOf('.') + 1,
-      formPath.length - 1
-    );
+    if(formPath.includes('.')) {
+      return formPath.substring(
+        formPath.lastIndexOf('.') + 1,
+        formPath.length
+      );
+    } else {
+      return formPath;
+    }
   }
 
   onSubmit() {

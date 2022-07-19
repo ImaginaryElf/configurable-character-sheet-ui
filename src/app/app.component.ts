@@ -16,6 +16,7 @@ export class AppComponent implements OnInit, OnDestroy {
   title = 'Configurable Character Sheet';
   gmGames: Game[] | undefined;
   playerGames: Game[] | undefined;
+  isHandset: boolean = false;
   isHandset$: Observable<boolean> = this.breakpointObserver
     .observe(Breakpoints.Handset)
     .pipe(
@@ -49,6 +50,12 @@ export class AppComponent implements OnInit, OnDestroy {
     this.subscriptions.add(
       this.gameRepo.playerGames$.subscribe((g) => {
         this.playerGames = g;
+      })
+    );
+
+    this.subscriptions.add(
+      this.isHandset$.subscribe((ih) => {
+        this.isHandset = ih;
       })
     );
   }

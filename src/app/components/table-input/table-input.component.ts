@@ -7,6 +7,7 @@ import { FormArray, FormControl, FormGroup } from '@angular/forms';
   styleUrls: ['./table-input.component.scss'],
 })
 export class TableInputComponent {
+  @Input() formGroup!: FormGroup;
   @Input() parentForm!: FormArray;
   @Input() layout!: any;
 

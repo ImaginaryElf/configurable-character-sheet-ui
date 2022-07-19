@@ -1,4 +1,4 @@
-<div class="container pt-2" *ngIf="character && game && game.layout">
+<div class="container pt-2" *ngIf="character && game && game.layout && game.layout.tabs">
   <h1 class="mat-h1">{{ character.characterName }}</h1>
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <mat-tab-group>
@@ -18,60 +18,70 @@
       Submit
     </button>
   </form>
+
+  <ng-template #layoutTemplate let-rowItems="rowItems">
+    <ng-container *ngIf="rowItems">
+      <div class="row" *ngFor="let row of rowItems">
+        <ng-container
+          *ngIf="row.control"
+          [ngTemplateOutlet]="controlTemplate"
+          [ngTemplateOutletContext]="{ controlItem: row.control }"
+        ></ng-container>
+        <ng-container *ngIf="row.columns">
+          <div class="col-{{ column.width }}" *ngFor="let column of row.columns">
+            <ng-container
+              *ngIf="column.control"
+              [ngTemplateOutlet]="controlTemplate"
+              [ngTemplateOutletContext]="{ controlItem: column.control }"
+            ></ng-container>
+            <ng-container
+              *ngIf="column.rows"
+              [ngTemplateOutlet]="layoutTemplate"
+              [ngTemplateOutletContext]="{ rowItems: column.rows }"
+            ></ng-container>
+          </div>
+        </ng-container>
+      </div>
+    </ng-container>
+  </ng-template>
+
+  <ng-template #controlTemplate let-controlItem="controlItem">
+    <ng-container *ngIf="controlItem.type === 'textInput'">
+      <app-text-input
+        [layout]="controlItem"
+        [parentForm]="getParentControl(controlItem.dataField)"
+        [controlName]="getControlName(controlItem.dataField)"
+      ></app-text-input>
+    </ng-container>
+    <ng-container *ngIf="controlItem.type === 'numericInput'">
+      <app-number-input
+        [layout]="controlItem"
+        [parentForm]="getParentControl(controlItem.dataField)"
+        [controlName]="getControlName(controlItem.dataField)"
+      ></app-number-input>
+    </ng-container>
+    <ng-container *ngIf="controlItem.type === 'boolInput'">
+      <app-bool-input
+        [layout]="controlItem"
+        [parentForm]="getParentControl(controlItem.dataField)"
+        [controlName]="getControlName(controlItem.dataField)"
+      ></app-bool-input>
+    </ng-container>
+    <ng-container *ngIf="controlItem.type === 'nullInput'">
+      <app-null-input [layout]="controlItem"></app-null-input>
+    </ng-container>
+    <ng-container *ngIf="controlItem.type === 'listInput'">
+      <app-list-input
+        [layout]="controlItem"
+        [parentForm]="getFormControl(controlItem.dataField)"
+      ></app-list-input>
+    </ng-container>
+    <ng-container *ngIf="controlItem.type === 'tableInput'">
+      <app-table-input
+        [layout]="controlItem"
+        [parentForm]="getFormControl(controlItem.dataField)"
+        [formGroup]="getParentControl(controlItem.dataField)"
+      ></app-table-input>
+    </ng-container>
+  </ng-template>
 </div>
-
-<ng-template #layoutTemplate let-rowItems="rowItems">
-  <div class="row" *ngFor="let row of rowItems">
-    <div class="col-{{ column.width }}" *ngFor="let column of row.columns">
-      <ng-container
-        *ngIf="column.control"
-        [ngTemplateOutlet]="controlTemplate"
-        [ngTemplateOutletContext]="{ controlItem: column.control }"
-      ></ng-container>
-      <ng-container
-        *ngIf="column.rows"
-        [ngTemplateOutlet]="layoutTemplate"
-        [ngTemplateOutletContext]="{ rowItems: column.rows }"
-      ></ng-container>
-    </div>
-  </div>
-</ng-template>
-
-<ng-template #controlTemplate let-controlItem="controlItem">
-  <ng-container *ngIf="controlItem.type === 'textInput'">
-    <app-text-input
-      [layout]="controlItem"
-      [parentForm]="getParentControl(controlItem.dataField)"
-      [controlName]="getControlName(controlItem.dataField)"
-    ></app-text-input>
-  </ng-container>
-  <ng-container *ngIf="controlItem.type === 'numericInput'">
-    <app-number-input
-      [layout]="controlItem"
-      [parentForm]="getParentControl(controlItem.dataField)"
-      [controlName]="getControlName(controlItem.dataField)"
-    ></app-number-input>
-  </ng-container>
-  <ng-container *ngIf="controlItem.type === 'boolInput'">
-    <app-bool-input
-      [layout]="controlItem"
-      [parentForm]="getParentControl(controlItem.dataField)"
-      [controlName]="getControlName(controlItem.dataField)"
-    ></app-bool-input>
-  </ng-container>
-  <ng-container *ngIf="controlItem.type === 'nullInput'">
-    <app-null-input [layout]="controlItem"></app-null-input>
-  </ng-container>
-  <ng-container *ngIf="controlItem.type === 'listInput'">
-    <app-list-input
-      [layout]="controlItem"
-      [parentForm]="getFormControl(controlItem.dataField)"
-    ></app-list-input>
-  </ng-container>
-  <ng-container *ngIf="controlItem.type === 'tableInput'">
-    <app-table-input
-      [layout]="controlItem"
-      [parentForm]="getFormControl(controlItem.dataField)"
-    ></app-table-input>
-  </ng-container>
-</ng-template>
