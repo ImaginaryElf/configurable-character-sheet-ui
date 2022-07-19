@@ -40,10 +40,8 @@ export class CharacterComponent implements OnInit, OnDestroy {
     this.subscriptions.add(
       this.gameRepo.game$.subscribe((game) => {
         this.game = game;
-        console.log('game: ' + JSON.stringify(this.game));
         const characters = game?.players?.flatMap((p: any) => p.characters);
         this.character = characters?.find((c: any) => c.id == this.characterId);
-        console.log('character: ' + JSON.stringify(this.character));
         this.constructForm();
       })
     );
