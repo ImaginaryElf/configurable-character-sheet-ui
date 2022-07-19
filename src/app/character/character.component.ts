@@ -53,9 +53,14 @@ export class CharacterComponent implements OnInit, OnDestroy {
 
   constructForm() {
     const layoutControls: any[] = [];
-    this.game?.layout.tabs.forEach((t: any) =>
-      layoutControls.push(this.getLayoutControls(t.rows))
-    );
+    this.game?.layout.tabs.forEach((t: any) => {
+      if (t.rows) {
+        layoutControls.push(this.getLayoutControls(t.rows));
+      }
+    });
+    if (layoutControls.length < 0 || !this.game || !this.character) {
+      return;
+    }
     this.constructFormControls(
       [],
       [],
@@ -66,15 +71,17 @@ export class CharacterComponent implements OnInit, OnDestroy {
   }
 
   getLayoutControls(rows: any[]) {
-    return rows.flatMap((r) =>
-      r.columns.flatMap((c: any) => {
-        if (c.control) {
-          return c.control;
-        } else if (c.rows) {
-          return this.getLayoutControls(c.rows);
-        }
-      })
-    );
+    return rows.flatMap((r) => {
+      if (r.columns) {
+        r.columns.flatMap((c: any) => {
+          if (c.control) {
+            return c.control;
+          } else if (c.rows) {
+            return this.getLayoutControls(c.rows);
+          }
+        });
+      }
+    });
   }
 
   constructFormControls(
@@ -84,6 +91,10 @@ export class CharacterComponent implements OnInit, OnDestroy {
     layoutControls: any[],
     form: AbstractControl | null | undefined
   ) {
+    if (!obj || !form) {
+      return;
+    }
+
     for (const key in obj) {
       if (obj[key] && typeof obj[key] == 'object') {
         path.push(key);
