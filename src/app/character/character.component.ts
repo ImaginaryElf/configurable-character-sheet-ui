@@ -98,6 +98,8 @@ export class CharacterComponent implements OnInit, OnDestroy {
     layoutControls: any[],
     form: AbstractControl | null | undefined
   ) {
+    console.log("layout controls");
+    console.log(layoutControls);
     if (!obj || !form) {
       return;
     }
@@ -141,6 +143,8 @@ export class CharacterComponent implements OnInit, OnDestroy {
 
       }
     }
+    console.log("form");
+    console.log(form);
   }
 
   constructFormControl(layoutControl: any, charPropValue: any) {
