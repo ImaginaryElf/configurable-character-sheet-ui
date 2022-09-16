@@ -38,6 +38,7 @@ export class CharacterComponent implements OnInit, OnDestroy {
           return;
         }
         this.game = game;
+        console.log(this.game.layout.tabs)
         const characters = game?.players?.flatMap((p: any) => p.characters);
         this.character = characters?.find((c: any) => c.id == this.characterId);
         this.constructForm(game);
@@ -98,8 +99,6 @@ export class CharacterComponent implements OnInit, OnDestroy {
     layoutControls: any[],
     form: AbstractControl | null | undefined
   ) {
-    console.log("layout controls");
-    console.log(layoutControls);
     if (!obj || !form) {
       return;
     }
@@ -143,8 +142,6 @@ export class CharacterComponent implements OnInit, OnDestroy {
 
       }
     }
-    console.log("form");
-    console.log(form);
   }
 
   constructFormControl(layoutControl: any, charPropValue: any) {
