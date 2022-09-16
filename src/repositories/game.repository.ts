@@ -6,7 +6,6 @@ import {
 } from '@ngneat/elf-entities';
 import { Game } from '../models/game';
 import { Injectable } from '@angular/core';
-import * as _ from "lodash";
 
 const gmGamesStore = createStore({ name: 'gmGames' }, withEntities<Game>());
 const playerGamesStore = createStore(
@@ -39,7 +38,7 @@ export class GameRepository {
   }
 
   updateCurrentGame(game: Game) {
-    gameStore.update((state) => (_.merge(state, game)));
+    gameStore.update(() => (game));
   }
 
   updateCharacterList(characterList: any[]) {
