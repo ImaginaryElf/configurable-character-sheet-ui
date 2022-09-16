@@ -81,6 +81,7 @@ export class ApiClientService {
         tap((result) => {
           const response = result as ApiResponse;
           if (response && response.status && response.data.length > 0) {
+            console.log(createGameObject(response.data[0]));
             this.gameRepo.updateCurrentGame(createGameObject(response.data[0]));
           }
         })
