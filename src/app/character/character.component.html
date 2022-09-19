@@ -33,7 +33,7 @@
         <ng-container *ngIf="row.columns">
           <div
             class="col-{{ column.width }}{{
-              column['collapsable'] ? ' col-12-sm' : ''
+              column['collapsible'] ? ' col-12-sm' : ''
             }}"
             *ngFor="let column of row.columns"
           >
