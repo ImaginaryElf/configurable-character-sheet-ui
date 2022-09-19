@@ -1,4 +1,7 @@
-<div class="container pt-2" *ngIf="character && game && game.layout && game.layout.tabs">
+<div
+  class="container pt-2"
+  *ngIf="character && game && game.layout && game.layout.tabs"
+>
   <h1 class="mat-h1">{{ character.characterName }}</h1>
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <mat-tab-group>
@@ -28,7 +31,12 @@
           [ngTemplateOutletContext]="{ controlItem: row.control }"
         ></ng-container>
         <ng-container *ngIf="row.columns">
-          <div class="col-{{ column.width }}" *ngFor="let column of row.columns">
+          <div
+            class="col-{{ column.width }}{{
+              column['collapsable'] ? ' col-12-sm' : ''
+            }}"
+            *ngFor="let column of row.columns"
+          >
             <ng-container
               *ngIf="column.control"
               [ngTemplateOutlet]="controlTemplate"
@@ -46,6 +54,18 @@
   </ng-template>
 
   <ng-template #controlTemplate let-controlItem="controlItem">
+    <ng-container *ngIf="controlItem.type === 'titleLabel'">
+      <app-title-label [layout]="controlItem"></app-title-label>
+    </ng-container>
+    <ng-container *ngIf="controlItem.type === 'smallLabel'">
+      <app-small-label [layout]="controlItem"></app-small-label>
+    </ng-container>
+    <ng-container *ngIf="controlItem.type === 'mediumLabel'">
+      <app-medium-label [layout]="controlItem"></app-medium-label>
+    </ng-container>
+    <ng-container *ngIf="controlItem.type === 'largeLabel'">
+      <app-large-label [layout]="controlItem"></app-large-label>
+    </ng-container>
     <ng-container *ngIf="controlItem.type === 'textInput'">
       <app-text-input
         [layout]="controlItem"
@@ -66,9 +86,6 @@
         [parentForm]="getParentControl(controlItem.dataField)"
         [controlName]="getControlName(controlItem.dataField)"
       ></app-bool-input>
-    </ng-container>
-    <ng-container *ngIf="controlItem.type === 'nullInput'">
-      <app-null-input [layout]="controlItem"></app-null-input>
     </ng-container>
     <ng-container *ngIf="controlItem.type === 'listInput'">
       <app-list-input

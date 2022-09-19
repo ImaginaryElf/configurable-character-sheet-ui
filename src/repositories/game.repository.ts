@@ -38,7 +38,7 @@ export class GameRepository {
   }
 
   updateCurrentGame(game: Game) {
-    gameStore.update(() => (game));
+    gameStore.update(() => game);
   }
 
   updateCharacterList(characterList: any[]) {

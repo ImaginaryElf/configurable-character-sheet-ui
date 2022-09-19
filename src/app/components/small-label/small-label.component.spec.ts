@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { NullInputComponent } from './null-input.component';
+import { SmallLabelComponent } from './small-label.component';
 
-describe('NullInputComponent', () => {
-  let component: NullInputComponent;
-  let fixture: ComponentFixture<NullInputComponent>;
+describe('SmallLabelComponent', () => {
+  let component: SmallLabelComponent;
+  let fixture: ComponentFixture<SmallLabelComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [NullInputComponent],
+      declarations: [SmallLabelComponent],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(NullInputComponent);
+    fixture = TestBed.createComponent(SmallLabelComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

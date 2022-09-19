@@ -1,6 +1,7 @@
 <ng-container [formGroup]="formGroup">
   <mat-label>{{ layout.label }}</mat-label>
   <mat-table
+    class="col-12"
     [formArrayName]="layout.dataField"
     [dataSource]="parentForm.getRawValue()"
   >
@@ -13,11 +14,13 @@
         *cdkCellDef="let row; let rowIndex = index"
         [formGroupName]="rowIndex"
       >
-        <input
-          type="text"
-          size="2"
-          [formControlName]="layout.tableMappings[tableHeading]"
-        />
+        <mat-form-field>
+          <input
+            type="text"
+            size="2"
+            [formControlName]="layout.tableMappings[tableHeading]"
+          />
+        </mat-form-field>
       </mat-cell>
     </ng-container>
 
@@ -27,11 +30,9 @@
         *cdkCellDef="let row; let rowIndex = index"
         [formGroupName]="rowIndex"
       >
-        <button
-          mat-flat-button
-          color="primary"
-          (click)="removeItem(rowIndex)"
-        >Remove</button>
+        <button mat-flat-button color="primary" (click)="removeItem(rowIndex)">
+          Remove
+        </button>
       </mat-cell>
     </ng-container>
 
