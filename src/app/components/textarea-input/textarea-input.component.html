@@ -1,0 +1,9 @@
+<mat-form-field [formGroup]="parentForm">
+  <mat-label>{{ layout.label }}</mat-label>
+  <textarea
+    style="{{layout.height? 'height:'+layout.height+'px' : ''}}"
+    matInput
+    [id]="layout.dataField"
+    [formControlName]="controlName"
+  ></textarea>
+</mat-form-field>

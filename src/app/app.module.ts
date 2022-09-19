@@ -40,6 +40,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { SmallLabelComponent } from './components/small-label/small-label.component';
 import { MediumLabelComponent } from './components/medium-label/medium-label.component';
 import { LargeLabelComponent } from './components/large-label/large-label.component';
+import { TextboxInputComponent } from './components/textbox-input/textbox-input.component';
+import { TextareaInputComponent } from './components/textarea-input/textarea-input.component';
 
 @NgModule({
   declarations: [
@@ -61,6 +63,8 @@ import { LargeLabelComponent } from './components/large-label/large-label.compon
     SmallLabelComponent,
     MediumLabelComponent,
     LargeLabelComponent,
+    TextboxInputComponent,
+    TextareaInputComponent,
   ],
   imports: [
     BrowserModule,

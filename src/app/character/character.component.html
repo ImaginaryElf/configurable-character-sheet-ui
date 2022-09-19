@@ -73,6 +73,13 @@
         [controlName]="getControlName(controlItem.dataField)"
       ></app-text-input>
     </ng-container>
+    <ng-container *ngIf="controlItem.type === 'textareaInput'">
+      <app-textarea-input
+        [layout]="controlItem"
+        [parentForm]="getParentControl(controlItem.dataField)"
+        [controlName]="getControlName(controlItem.dataField)"
+      ></app-textarea-input>
+    </ng-container>
     <ng-container *ngIf="controlItem.type === 'numericInput'">
       <app-number-input
         [layout]="controlItem"
