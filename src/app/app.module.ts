@@ -40,8 +40,10 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { SmallLabelComponent } from './components/small-label/small-label.component';
 import { MediumLabelComponent } from './components/medium-label/medium-label.component';
 import { LargeLabelComponent } from './components/large-label/large-label.component';
-import { TextboxInputComponent } from './components/textbox-input/textbox-input.component';
 import { TextareaInputComponent } from './components/textarea-input/textarea-input.component';
+import { CreateGameDialogComponent } from './dialogs/create-game-dialog/create-game-dialog.component';
+import { AddPlayerDialogComponent } from './dialogs/add-player-dialog/add-player-dialog.component';
+import { CreateCharacterDialogComponent } from './dialogs/create-character-dialog/create-character-dialog.component';
 
 @NgModule({
   declarations: [
@@ -63,8 +65,11 @@ import { TextareaInputComponent } from './components/textarea-input/textarea-inp
     SmallLabelComponent,
     MediumLabelComponent,
     LargeLabelComponent,
-    TextboxInputComponent,
     TextareaInputComponent,
+    TextareaInputComponent,
+    CreateGameDialogComponent,
+    AddPlayerDialogComponent,
+    CreateCharacterDialogComponent,
   ],
   imports: [
     BrowserModule,
