@@ -164,6 +164,7 @@ export class CharacterComponent implements OnInit, OnDestroy {
   constructFormControl(layoutControl: any, charPropValue: any) {
     switch (layoutControl.type) {
       case 'textInput':
+      case 'textareaInput':
       case 'numericInput':
       case 'boolInput':
       case 'tableInput':
